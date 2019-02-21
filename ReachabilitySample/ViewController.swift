@@ -7,14 +7,14 @@
 //
 
 import UIKit
-import Reachability
+import ReachabilitySwift
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var networkStatus: UILabel!
     @IBOutlet weak var hostNameLabel: UILabel!
     
-    var reachability: Reachability?
+    var reachability: ReachabilitySwift?
     let hostNames = [nil, "google.com", "invalidhost"]
     var hostIndex = 0
     
@@ -34,12 +34,12 @@ class ViewController: UIViewController {
     }
     
     func setupReachability(_ hostName: String?, useClosures: Bool) {
-        let reachability: Reachability?
+        let reachability: ReachabilitySwift?
         if let hostName = hostName {
-            reachability = Reachability(hostname: hostName)
+            reachability = ReachabilitySwift(hostname: hostName)
             hostNameLabel.text = hostName
         } else {
-            reachability = Reachability()
+            reachability = ReachabilitySwift()
             hostNameLabel.text = "No host name"
         }
         self.reachability = reachability
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
         reachability = nil
     }
     
-    func updateLabelColourWhenReachable(_ reachability: Reachability) {
+    func updateLabelColourWhenReachable(_ reachability: ReachabilitySwift) {
         print("\(reachability.description) - \(reachability.connection)")
         if reachability.connection == .wifi {
             self.networkStatus.textColor = .green
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
         self.networkStatus.text = "\(reachability.connection)"
     }
     
-    func updateLabelColourWhenNotReachable(_ reachability: Reachability) {
+    func updateLabelColourWhenNotReachable(_ reachability: ReachabilitySwift) {
         print("\(reachability.description) - \(reachability.connection)")
         
         self.networkStatus.textColor = .red
@@ -100,7 +100,7 @@ class ViewController: UIViewController {
     }
 
     @objc func reachabilityChanged(_ note: Notification) {
-        let reachability = note.object as! Reachability
+        let reachability = note.object as! ReachabilitySwift
         
         if reachability.connection != .none {
             updateLabelColourWhenReachable(reachability)
