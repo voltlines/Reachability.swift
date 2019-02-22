@@ -1,6 +1,6 @@
 //
-//  Reachability.h
-//  Reachability
+//  ReachabilitySwift.h
+//  ReachabilitySwift
 //
 //  Created by Yuki Nagai on 11/2/15.
 //  Copyright © 2015 Ashley Mills. All rights reserved.

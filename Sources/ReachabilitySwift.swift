@@ -43,10 +43,10 @@ public extension Notification.Name {
     public static let reachabilityChanged = Notification.Name("reachabilityChanged")
 }
 
-public class Reachability {
+public class ReachabilitySwift {
 
-    public typealias NetworkReachable = (Reachability) -> ()
-    public typealias NetworkUnreachable = (Reachability) -> ()
+    public typealias NetworkReachable = (ReachabilitySwift) -> ()
+    public typealias NetworkUnreachable = (ReachabilitySwift) -> ()
 
     @available(*, unavailable, renamed: "Connection")
     public enum NetworkStatus: CustomStringConvertible {
@@ -77,10 +77,10 @@ public class Reachability {
     @available(*, deprecated: 4.0, renamed: "allowsCellularConnection")
     public let reachableOnWWAN: Bool = true
 
-    /// Set to `false` to force Reachability.connection to .none when on cellular connection (default value `true`)
+    /// Set to `false` to force ReachabilitySwift.connection to .none when on cellular connection (default value `true`)
     public var allowsCellularConnection: Bool
 
-    // The notification center on which "reachability changed" events are being posted
+    // The notification center on which "reachabilitySwift changed" events are being posted
     public var notificationCenter: NotificationCenter = NotificationCenter.default
 
     @available(*, deprecated: 4.0, renamed: "connection.description")
@@ -149,7 +149,7 @@ public class Reachability {
     }
 }
 
-public extension Reachability {
+public extension ReachabilitySwift {
 
     // MARK: - *** Notifier methods ***
     func startNotifier() throws {
@@ -158,12 +158,12 @@ public extension Reachability {
         let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
             guard let info = info else { return }
 
-            let reachability = Unmanaged<Reachability>.fromOpaque(info).takeUnretainedValue()
+            let reachability = Unmanaged<ReachabilitySwift>.fromOpaque(info).takeUnretainedValue()
             reachability.flags = flags
         }
 
         var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
-        context.info = UnsafeMutableRawPointer(Unmanaged<Reachability>.passUnretained(self).toOpaque())
+        context.info = UnsafeMutableRawPointer(Unmanaged<ReachabilitySwift>.passUnretained(self).toOpaque())
         if !SCNetworkReachabilitySetCallback(reachabilityRef, callback, &context) {
             stopNotifier()
             throw ReachabilityError.UnableToSetCallback
@@ -220,7 +220,7 @@ public extension Reachability {
     }
 }
 
-fileprivate extension Reachability {
+fileprivate extension ReachabilitySwift {
 
     func setReachabilityFlags() throws {
         try reachabilitySerialQueue.sync { [unowned self] in
@@ -247,7 +247,7 @@ fileprivate extension Reachability {
 
 extension SCNetworkReachabilityFlags {
 
-    typealias Connection = Reachability.Connection
+    typealias Connection = ReachabilitySwift.Connection
 
     var connection: Connection {
         guard isReachableFlagSet else { return .none }
